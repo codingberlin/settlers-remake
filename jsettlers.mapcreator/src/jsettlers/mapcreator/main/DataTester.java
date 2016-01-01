@@ -34,6 +34,7 @@ import jsettlers.mapcreator.main.error.BuildingError;
 import jsettlers.mapcreator.main.error.BuildingLandOwnerError;
 import jsettlers.mapcreator.main.error.BuildingLandscapeError;
 import jsettlers.mapcreator.main.error.ErrorList;
+import jsettlers.mapcreator.main.error.LandscapeTypeError;
 import jsettlers.mapcreator.main.error.LocalizedError;
 import jsettlers.mapcreator.main.error.MapCreatorError;
 import jsettlers.mapcreator.main.error.ResourceError;
@@ -245,7 +246,6 @@ public class DataTester implements Runnable {
 				testFailed(new BuildingLandOwnerError(pos, buildingObject, players[x][y]));
 			} else if (type.getGroundtypes()[0] != ELandscapeType.MOUNTAIN && data.getLandscapeHeight(pos.x, pos.y) != height) {
 				testFailed(new BuildingError(pos, "error.building.notflat", buildingObject));
-				testFailed("Building " + type + " of player " + buildingObject.getPlayerId() + " must be on flat ground", pos);
 			}
 		}
 	}
@@ -275,7 +275,7 @@ public class DataTester implements Runnable {
 			testFailed(new LocalizedError(new ShortPoint2D(x, y), "error.heightdifference"));
 		}
 		if (!fader.canFadeTo(l2, l1)) {
-			testFailed("Wrong landscape pair: " + l2 + ", " + l1, new ShortPoint2D(x, y));
+			testFailed(new LandscapeTypeError(new ShortPoint2D(x, y), l1, l2));
 		}
 
 		if (players[x][y] != players[x2][y2]) {
