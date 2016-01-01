@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.IllegalFormatException;
 
+import jsettlers.common.landscape.ELandscapeType;
 import jsettlers.graphics.localization.AbstractLabels;
 
 public class EditorLabels extends AbstractLabels {
@@ -51,6 +52,17 @@ public class EditorLabels extends AbstractLabels {
 	 */
 	public static String getLabel(String key, Object[] formatArgs) {
 		return String.format(getLabel(key), formatArgs);
+	}
+
+	/**
+	 * Gets the label for a given landscape type.
+	 * 
+	 * @param type
+	 *            The landscape
+	 * @return A description of the landscape type.
+	 */
+	public static Object getName(ELandscapeType type) {
+		return getLabel("landscape." + type);
 	}
 
 	@Override

@@ -33,6 +33,7 @@ import jsettlers.mapcreator.data.MapData;
 import jsettlers.mapcreator.main.error.ErrorList;
 import jsettlers.mapcreator.main.error.LocalizedError;
 import jsettlers.mapcreator.main.error.MapCreatorError;
+import jsettlers.mapcreator.main.error.ResourceError;
 import jsettlers.mapcreator.main.error.StringError;
 
 public class DataTester implements Runnable {
@@ -155,8 +156,12 @@ public class DataTester implements Runnable {
 		// test resources
 		for (short x = 0; x < data.getWidth(); x++) {
 			for (short y = 0; y < data.getHeight(); y++) {
-				if (data.getResourceAmount(x, y) > 0 && !mayHoldResource(data.getLandscape(x, y), data.getResourceType(x, y))) {
-					testFailed("" + data.getLandscape(x, y) + "may not have " + data.getResourceType(x, y), new ShortPoint2D(x, y));
+				if (data.getResourceAmount(x, y) > 0) {
+					EResourceType resourceType = data.getResourceType(x, y);
+					ELandscapeType landscape = data.getLandscape(x, y);
+					if (!mayHoldResource(landscape, resourceType)) {
+						testFailed(new ResourceError(new ShortPoint2D(x, y), resourceType, landscape));
+					}
 				}
 			}
 		}

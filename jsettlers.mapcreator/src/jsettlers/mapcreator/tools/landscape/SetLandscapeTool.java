@@ -58,7 +58,7 @@ public class SetLandscapeTool extends AbstractTool {
 
 	public SetLandscapeTool(ELandscapeType type, boolean isRiver) {
 		super(new RectIcon(16, new Color(type.color.getARGB())),
-				String.format(EditorLabels.getLabel("landscapedescr"), EditorLabels.getLabel("landscape." + type)));
+				String.format(EditorLabels.getLabel("landscapedescr"), EditorLabels.getName(type)));
 		this.type = type;
 		this.isRiver = isRiver;
 	}

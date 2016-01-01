@@ -14,29 +14,54 @@
  *******************************************************************************/
 package jsettlers.mapcreator.main.error;
 
+import jsettlers.common.landscape.ELandscapeType;
+import jsettlers.common.landscape.EResourceType;
 import jsettlers.common.position.ShortPoint2D;
+import jsettlers.graphics.localization.Labels;
 import jsettlers.mapcreator.localization.EditorLabels;
 
-public class LocalizedError extends MapCreatorError {
-	private final String label;
+/**
+ * This error descibes a resource that was placed on the wrong landscape type.
+ * 
+ * @author michael
+ *
+ */
+public class ResourceError extends LocalizedError {
+	private final EResourceType resource;
+	private final ELandscapeType landscape;
 
-	public LocalizedError(ShortPoint2D position, String label) {
-		super(position);
-		this.label = label;
+	/**
+	 * Create a new {@link ResourceError}
+	 * 
+	 * @param position
+	 *            The position
+	 * @param resource
+	 *            The resource that was wrong.
+	 * @param landscape
+	 *            The landscape type the resource was placed on.
+	 */
+	public ResourceError(ShortPoint2D position, EResourceType resource, ELandscapeType landscape) {
+		super(position, "error.resourceonlandscape");
+		this.resource = resource;
+		this.landscape = landscape;
 	}
 
 	@Override
-	public String getDescription() {
-		return EditorLabels.getLabel(label + ".description", getFormatArgs());
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("ResourceError [resource=");
+		builder.append(resource);
+		builder.append(", landscape=");
+		builder.append(landscape);
+		builder.append("]");
+		return builder.toString();
 	}
 
+	@Override
 	protected Object[] getFormatArgs() {
-		return new Object[0];
-	}
-
-	@Override
-	public String getShortDescription() {
-		return EditorLabels.getLabel(label, getFormatArgs());
-	}
-
+		return new Object[] {
+				Labels.getName(resource),
+				EditorLabels.getName(landscape)
+		};
+	};
 }
