@@ -17,6 +17,7 @@ package jsettlers.mapcreator.localization;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.IllegalFormatException;
 
 import jsettlers.graphics.localization.AbstractLabels;
 
@@ -35,6 +36,21 @@ public class EditorLabels extends AbstractLabels {
 	 */
 	public static String getLabel(String key) {
 		return instance.getSingleString(key);
+	}
+
+	/**
+	 * Gets a string and runs {@link String#format(String, Object...)} on it.
+	 * 
+	 * @param key
+	 *            The name of the string
+	 * @param formatArgs
+	 *            The arguments to pass to format.
+	 * @throws IllegalFormatException
+	 *             If {@link String#format(String, Object...)} trows one.
+	 * @return The localized string
+	 */
+	public static String getLabel(String key, Object[] formatArgs) {
+		return String.format(getLabel(key), formatArgs);
 	}
 
 	@Override

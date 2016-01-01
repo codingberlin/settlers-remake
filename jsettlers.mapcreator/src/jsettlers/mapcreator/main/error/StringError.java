@@ -31,7 +31,7 @@ public class StringError extends MapCreatorError {
 	}
 
 	@Override
-	public String getDescription() {
+	public String getShortDescription() {
 		return description;
 	}
 }

@@ -40,7 +40,16 @@ public abstract class MapCreatorError implements ILocatable {
 	 * 
 	 * @return The localized description of this error.
 	 */
-	public abstract String getDescription();
+	public abstract String getShortDescription();
+
+	/**
+	 * Returns the long description of this error. The description may use HTML.
+	 * 
+	 * @return The long, localized explanation about this error.
+	 */
+	public String getDescription() {
+		return getShortDescription();
+	}
 
 	@Override
 	public String toString() {
@@ -48,7 +57,7 @@ public abstract class MapCreatorError implements ILocatable {
 		builder.append("MapCreatorError [position=");
 		builder.append(position);
 		builder.append(", ");
-		builder.append(getDescription());
+		builder.append(getShortDescription());
 		builder.append("]");
 		return builder.toString();
 	}

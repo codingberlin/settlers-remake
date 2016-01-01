@@ -31,6 +31,7 @@ import jsettlers.common.position.ShortPoint2D;
 import jsettlers.mapcreator.data.LandscapeFader;
 import jsettlers.mapcreator.data.MapData;
 import jsettlers.mapcreator.main.error.ErrorList;
+import jsettlers.mapcreator.main.error.LocalizedError;
 import jsettlers.mapcreator.main.error.MapCreatorError;
 import jsettlers.mapcreator.main.error.StringError;
 
@@ -209,7 +210,7 @@ public class DataTester implements Runnable {
 				}
 
 				if (!data.getLandscape(x, y).isBlocking) {
-					testFailed("All border positions must be blocking!", new ShortPoint2D(x, y));
+					testFailed(new LocalizedError(new ShortPoint2D(x, y), "error.bordernotblocking"));
 				}
 			}
 		}
@@ -262,7 +263,7 @@ public class DataTester implements Runnable {
 		ELandscapeType l1 = data.getLandscape(x, y);
 		int maxHeightDiff = getMaxHeightDiff(l1, l2);
 		if (Math.abs(data.getLandscapeHeight(x2, y2) - data.getLandscapeHeight(x, y)) > maxHeightDiff) {
-			testFailed("Too high landscape diff", new ShortPoint2D(x, y));
+			testFailed(new LocalizedError(new ShortPoint2D(x, y), "error.heightdifference"));
 		}
 		if (!fader.canFadeTo(l2, l1)) {
 			testFailed("Wrong landscape pair: " + l2 + ", " + l1, new ShortPoint2D(x, y));
@@ -284,11 +285,15 @@ public class DataTester implements Runnable {
 	}
 
 	private void testFailed(String string, ShortPoint2D pos) {
+		testFailed(new StringError(pos, string));
+	}
+
+	private void testFailed(MapCreatorError e) {
 		successful = false;
-		result = string;
-		resultPosition = pos;
-		failpoints[pos.x][pos.y] = true;
-		errors.add(new StringError(pos, string));
+		result = e.getShortDescription();
+		resultPosition = e.getPos();
+		failpoints[e.getPos().x][e.getPos().y] = true;
+		errors.add(e);
 	}
 
 	public synchronized void retest() {
