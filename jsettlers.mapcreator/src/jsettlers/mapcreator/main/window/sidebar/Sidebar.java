@@ -6,10 +6,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import jsettlers.common.position.ILocatable;
 import jsettlers.mapcreator.localization.EditorLabels;
+import jsettlers.mapcreator.main.error.ErrorCellRenderer;
 import jsettlers.mapcreator.main.error.ErrorList;
 import jsettlers.mapcreator.main.error.IScrollToAble;
+import jsettlers.mapcreator.main.error.MapCreatorError;
 
 /**
  * The sidebar with all tabs
@@ -49,7 +50,7 @@ public class Sidebar extends JTabbedPane {
 	 *            Interface to scroll to position
 	 */
 	public void initErrorTab(final ErrorList errorList, final IScrollToAble scrollTo) {
-		final JList<ILocatable> list = new JList<>(errorList);
+		final JList<MapCreatorError> list = new JList<>(errorList);
 		list.addListSelectionListener(new ListSelectionListener() {
 
 			@Override
@@ -60,6 +61,7 @@ public class Sidebar extends JTabbedPane {
 				}
 			}
 		});
+		list.setCellRenderer(new ErrorCellRenderer());
 
 		this.scrolErrorList = new JScrollPane(list);
 		addTab(EditorLabels.getLabel("sidebar.errors"), scrolErrorList);

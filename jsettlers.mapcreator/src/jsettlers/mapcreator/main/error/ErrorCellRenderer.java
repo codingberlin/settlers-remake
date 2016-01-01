@@ -14,48 +14,40 @@
  *******************************************************************************/
 package jsettlers.mapcreator.main.error;
 
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.Component;
 
-import javax.swing.AbstractListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
 
 /**
- * List model with the errors on the Map
+ * The cell renderer that renders the entries for an {@link ErrorList}
  * 
- * @author Andreas Butti
+ * @author Michael Zangl
  */
-public class ErrorList extends AbstractListModel<MapCreatorError> {
-	private static final long serialVersionUID = -6645362444519496534L;
+public class ErrorCellRenderer extends JLabel implements ListCellRenderer<MapCreatorError> {
 
-	/**
-	 * Error locations
-	 */
-	private ArrayList<MapCreatorError> errors = new ArrayList<>();
+	private static final long serialVersionUID = -2348629505060427745L;
 
-	/**
-	 * Constructor
-	 */
-	public ErrorList() {
-	}
-
-	/**
-	 * @param errors
-	 *            Error locations
-	 */
-	public void setErrors(ArrayList<MapCreatorError> errors) {
-		int max = Math.max(errors.size(), this.errors.size());
-		this.errors = errors;
-
-		fireContentsChanged(this, 0, max);
+	public ErrorCellRenderer() {
+		setOpaque(true);
 	}
 
 	@Override
-	public MapCreatorError getElementAt(int arg0) {
-		return errors.get(arg0);
-	}
+	public Component getListCellRendererComponent(JList<? extends MapCreatorError> list, MapCreatorError value, int index, boolean isSelected,
+			boolean cellHasFocus) {
+		setText(value.getShortDescription());
+		setToolTipText("<html>" + value.getDescription() + "</html>");
 
-	@Override
-	public int getSize() {
-		return errors.size();
+		if (isSelected) {
+			setBackground(Color.BLUE);
+			setForeground(Color.WHITE);
+		} else {
+			setBackground(Color.WHITE);
+			setForeground(Color.BLACK);
+		}
+		return this;
 	}
 
 }
