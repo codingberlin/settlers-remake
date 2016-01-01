@@ -14,50 +14,42 @@
  *******************************************************************************/
 package jsettlers.mapcreator.main.error;
 
-import java.util.ArrayList;
-
-import javax.swing.AbstractListModel;
-
 import jsettlers.common.position.ILocatable;
+import jsettlers.common.position.ShortPoint2D;
 
 /**
- * List model with the errors on the Map
+ * This is an error that occured during the map editor validation.
  * 
- * @author Andreas Butti
+ * @author michael
+ *
  */
-public class ErrorList extends AbstractListModel<ILocatable> {
-	private static final long serialVersionUID = -6645362444519496534L;
+public abstract class MapCreatorError implements ILocatable {
+	private final ShortPoint2D position;
 
-	/**
-	 * Error locations
-	 */
-	private ArrayList<MapCreatorError> errors = new ArrayList<>();
-
-	/**
-	 * Constructor
-	 */
-	public ErrorList() {
-	}
-
-	/**
-	 * @param errors
-	 *            Error locations
-	 */
-	public void setErrors(ArrayList<MapCreatorError> errors) {
-		int max = Math.max(errors.size(), this.errors.size());
-		this.errors = errors;
-
-		fireContentsChanged(this, 0, max);
+	public MapCreatorError(ShortPoint2D position) {
+		this.position = position;
 	}
 
 	@Override
-	public ILocatable getElementAt(int arg0) {
-		return errors.get(arg0);
+	public ShortPoint2D getPos() {
+		return position;
 	}
+
+	/**
+	 * Gets a description describing this error. This message should be localized.
+	 * 
+	 * @return The localized description of this error.
+	 */
+	public abstract String getDescription();
 
 	@Override
-	public int getSize() {
-		return errors.size();
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("MapCreatorError [position=");
+		builder.append(position);
+		builder.append(", ");
+		builder.append(getDescription());
+		builder.append("]");
+		return builder.toString();
 	}
-
 }

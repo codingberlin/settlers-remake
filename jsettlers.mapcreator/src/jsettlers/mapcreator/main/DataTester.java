@@ -30,8 +30,9 @@ import jsettlers.common.position.RelativePoint;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.mapcreator.data.LandscapeFader;
 import jsettlers.mapcreator.data.MapData;
-import jsettlers.mapcreator.main.error.Error;
 import jsettlers.mapcreator.main.error.ErrorList;
+import jsettlers.mapcreator.main.error.MapCreatorError;
+import jsettlers.mapcreator.main.error.StringError;
 
 public class DataTester implements Runnable {
 
@@ -50,7 +51,7 @@ public class DataTester implements Runnable {
 	private final LandscapeFader fader = new LandscapeFader();
 	private boolean[][] failpoints;
 	private final ErrorList errorList;
-	private ArrayList<Error> errors = new ArrayList<Error>();
+	private ArrayList<MapCreatorError> errors = new ArrayList<MapCreatorError>();
 
 	/**
 	 * Thread for testing
@@ -121,7 +122,7 @@ public class DataTester implements Runnable {
 		successful = true;
 		result = "";
 		resultPosition = new ShortPoint2D(0, 0);
-		errors = new ArrayList<Error>();
+		errors = new ArrayList<MapCreatorError>();
 
 		failpoints = new boolean[data.getWidth()][data.getHeight()];
 		byte[][] players = new byte[data.getWidth()][data.getHeight()];
@@ -287,7 +288,7 @@ public class DataTester implements Runnable {
 		result = string;
 		resultPosition = pos;
 		failpoints[pos.x][pos.y] = true;
-		errors.add(new Error(pos, string));
+		errors.add(new StringError(pos, string));
 	}
 
 	public synchronized void retest() {
