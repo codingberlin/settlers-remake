@@ -103,6 +103,7 @@ public abstract class AbstractLabels {
 	 */
 	public LocaleSuffix[] getLocaleSuffixes() {
 		LocaleSuffix[] locales = new LocaleSuffix[] {
+				new LocaleSuffix(new Locale("en", "US"), true),
 				new LocaleSuffix(new Locale("en"), false),
 				new LocaleSuffix(preferredLocale, false),
 				new LocaleSuffix(preferredLocale, true),
