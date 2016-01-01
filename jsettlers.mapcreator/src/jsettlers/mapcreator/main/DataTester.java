@@ -30,6 +30,9 @@ import jsettlers.common.position.RelativePoint;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.mapcreator.data.LandscapeFader;
 import jsettlers.mapcreator.data.MapData;
+import jsettlers.mapcreator.main.error.BuildingError;
+import jsettlers.mapcreator.main.error.BuildingLandOwnerError;
+import jsettlers.mapcreator.main.error.BuildingLandscapeError;
 import jsettlers.mapcreator.main.error.ErrorList;
 import jsettlers.mapcreator.main.error.LocalizedError;
 import jsettlers.mapcreator.main.error.MapCreatorError;
@@ -235,12 +238,13 @@ public class DataTester implements Runnable {
 		for (RelativePoint p : type.getProtectedTiles()) {
 			ShortPoint2D pos = p.calculatePoint(start);
 			if (!data.contains(pos.x, pos.y)) {
-				testFailed("Building " + type + " outside map", pos);
+				testFailed(new BuildingError(pos, "error.building.outsidemap", buildingObject));
 			} else if (!MapData.listAllowsLandscape(type.getGroundtypes(), data.getLandscape(pos.x, pos.y))) {
-				testFailed("Building " + type + " cannot be placed on " + data.getLandscape(pos.x, pos.y), pos);
+				testFailed(new BuildingLandscapeError(pos, buildingObject, data.getLandscape(pos.x, pos.y)));
 			} else if (players[pos.x][pos.y] != buildingObject.getPlayerId()) {
-				testFailed("Building " + type + " of player " + buildingObject.getPlayerId() + ", but is on " + players[x][y] + "'s land", pos);
+				testFailed(new BuildingLandOwnerError(pos, buildingObject, players[x][y]));
 			} else if (type.getGroundtypes()[0] != ELandscapeType.MOUNTAIN && data.getLandscapeHeight(pos.x, pos.y) != height) {
+				testFailed(new BuildingError(pos, "error.building.notflat", buildingObject));
 				testFailed("Building " + type + " of player " + buildingObject.getPlayerId() + " must be on flat ground", pos);
 			}
 		}

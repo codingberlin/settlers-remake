@@ -14,44 +14,33 @@
  *******************************************************************************/
 package jsettlers.mapcreator.main.error;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 
+import jsettlers.common.map.object.BuildingObject;
 import jsettlers.common.position.ShortPoint2D;
-import jsettlers.mapcreator.localization.EditorLabels;
 
-public class LocalizedError extends MapCreatorError {
-	private final String label;
+public class BuildingLandOwnerError extends BuildingError {
+	private final int landOwnerId;
 
-	public LocalizedError(ShortPoint2D position, String label) {
-		super(position);
-		this.label = label;
+	public BuildingLandOwnerError(ShortPoint2D position, BuildingObject buildingObject, int landOwnerId) {
+		super(position, "error.building.landowner", buildingObject);
+		this.landOwnerId = landOwnerId;
 	}
 
 	@Override
-	public String getDescription() {
-		return EditorLabels.getLabel(label + ".description", getFormatArgsArray());
-	}
-
-	private Object[] getFormatArgsArray() {
-		return getFormatArgs().toArray();
-	}
-
-	protected List<Object> getFormatArgs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public String getShortDescription() {
-		return EditorLabels.getLabel(label, getFormatArgsArray());
+	protected ArrayList<Object> getFormatArgs() {
+		ArrayList<Object> args = super.getFormatArgs();
+		args.add(landOwnerId);
+		return args;
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("LocalizedError [label=");
-		builder.append(label);
+		builder.append("BuildingLandOwnerError [landOwnerId=");
+		builder.append(landOwnerId);
 		builder.append("]");
 		return builder.toString();
 	}
+
 }

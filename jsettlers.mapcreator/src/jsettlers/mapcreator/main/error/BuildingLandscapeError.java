@@ -14,44 +14,25 @@
  *******************************************************************************/
 package jsettlers.mapcreator.main.error;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.ArrayList;
 
+import jsettlers.common.landscape.ELandscapeType;
+import jsettlers.common.map.object.BuildingObject;
 import jsettlers.common.position.ShortPoint2D;
 import jsettlers.mapcreator.localization.EditorLabels;
 
-public class LocalizedError extends MapCreatorError {
-	private final String label;
+public class BuildingLandscapeError extends BuildingError {
+	private final ELandscapeType landscape;
 
-	public LocalizedError(ShortPoint2D position, String label) {
-		super(position);
-		this.label = label;
+	public BuildingLandscapeError(ShortPoint2D position, BuildingObject buildingObject, ELandscapeType landscape) {
+		super(position, "error.building.wronglandscape", buildingObject);
+		this.landscape = landscape;
 	}
 
 	@Override
-	public String getDescription() {
-		return EditorLabels.getLabel(label + ".description", getFormatArgsArray());
-	}
-
-	private Object[] getFormatArgsArray() {
-		return getFormatArgs().toArray();
-	}
-
-	protected List<Object> getFormatArgs() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public String getShortDescription() {
-		return EditorLabels.getLabel(label, getFormatArgsArray());
-	}
-
-	@Override
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("LocalizedError [label=");
-		builder.append(label);
-		builder.append("]");
-		return builder.toString();
+	protected ArrayList<Object> getFormatArgs() {
+		ArrayList<Object> args = super.getFormatArgs();
+		args.add(EditorLabels.getName(landscape));
+		return args;
 	}
 }

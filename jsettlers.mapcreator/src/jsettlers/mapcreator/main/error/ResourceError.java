@@ -14,6 +14,9 @@
  *******************************************************************************/
 package jsettlers.mapcreator.main.error;
 
+import java.util.Arrays;
+import java.util.List;
+
 import jsettlers.common.landscape.ELandscapeType;
 import jsettlers.common.landscape.EResourceType;
 import jsettlers.common.position.ShortPoint2D;
@@ -58,10 +61,10 @@ public class ResourceError extends LocalizedError {
 	}
 
 	@Override
-	protected Object[] getFormatArgs() {
-		return new Object[] {
+	protected List<Object> getFormatArgs() {
+		return Arrays.asList(
 				Labels.getName(resource),
 				EditorLabels.getName(landscape)
-		};
+				);
 	};
 }
